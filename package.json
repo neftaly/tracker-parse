@@ -1,0 +1,42 @@
+{
+  "name": "tracker-parse",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "semistandard | snazzy && babel-tape-runner ./test/**/*.js | faucet",
+    "build": "babel -q src --copy-files --out-dir dist",
+    "prepublish": "npm test && npm run build"
+  },
+  "repository": "https://github.com/neftaly/tracker-data",
+  "dependencies": {
+    "pako": "^1.0.5",
+    "ramda": "^0.23.0",
+    "text-encoding": "^0.6.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-tape-runner": "^2.0.1",
+    "faucet": "0.0.1",
+    "semistandard": "^11.0.0",
+    "snazzy": "^7.0.0",
+    "tape": "^4.6.3"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0"
+    ]
+  },
+  "semistandard": {
+    "parser": "babel-eslint",
+    "ignore": [
+      "/dist/"
+    ],
+    "env": {
+      "browser": true
+    }
+  }
+}

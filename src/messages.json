@@ -1,0 +1,285 @@
+{
+  "0": {
+    "type": "serverDetails",
+    "format": [
+      [ "version", "int32" ],
+      [ "tickRate", "float32" ],
+      [ "address", "string" ],
+      [ "name", "string" ],
+      [ "maxPlayers", "uint8" ],
+      [ "roundLength", "int16" ],
+      [ "briefingTime", "uint16" ],
+      [ "mapName", "string" ],
+      [ "mapMode", "string" ],
+      [ "mapLayer", "uint8" ],
+      [ "opforTeamName", "string" ],
+      [ "bluforTeamName", "string" ],
+      [ "startTime", "int32" ],
+      [ "bluforTickets", "uint16" ],
+      [ "opforTickets", "uint16" ]
+    ]
+  },
+  "__TODO_16": {
+    "type": "playerUpdate",
+    "multiple": true,
+    "format": [
+      [ "flags", "uint16" ],
+      [ "playerId", "uint8" ],
+      [ "status", "conditional", "flags", [
+        [ "team", "uint8" ],
+        [ "squad", "uint8" ],
+        [ "vehicle", "collection", [
+          [ "vehicleId", "int16" ],
+          [ "seatName", "string" ],
+          [ "SeatNumber", "uint8" ]
+        ] ],
+        [ "health", "uint8" ],
+        [ "score", "int16" ],
+        [ "teamworkScore", "int16" ],
+        [ "kills", "int16" ],
+        [ "teamKills", "int16" ],
+        [ "deaths", "int16" ],
+        [ "ping", "int16" ],
+        [ "isAlive", "bool" ],
+        [ "isJoining", "bool" ],
+        [ "position", "collection", [
+          [ "x", "int16" ],
+          [ "y", "int16" ],
+          [ "z", "int16" ]
+        ] ],
+        [ "yaw", "int16" ],
+        [ "kitName", "string" ]
+      ] ]
+    ]
+  },
+  "16": {
+    "type": "playerUpdate",
+    "format": null
+  },
+  "17": {
+    "type": "playerAdd",
+    "multiple": true,
+    "format": [
+      [ "playerId", "uint8" ],
+      [ "name", "string" ],
+      [ "hash", "string" ],
+      [ "ip", "string" ]
+    ]
+  },
+  "18": {
+    "type": "playerRemove",
+    "multiple": true,
+    "format": [
+      [ "playerId", "string" ]
+    ]
+  },
+  "__TODO_32": {
+    "type": "vehicleUpdate",
+    "multiple": true,
+    "format": [
+      [ "flags", "uint8" ],
+      [ "vehicleId", "int16" ],
+      [ "status", "conditional", "flags", [
+        [ "team", "uint16" ],
+        [ "position", "collection", [
+          [ "x", "int16" ],
+          [ "y", "int16" ],
+          [ "z", "int16" ]
+        ] ],
+        [ "yaw", "int16" ],
+        [ "health", "int16" ]
+      ] ]
+    ]
+  },
+  "32": {
+    "type": "vehicleUpdate",
+    "format": null
+  },
+  "33": {
+    "type": "vehicleAdd",
+    "multiple": true,
+    "format": [
+      [ "vehicleId", "uint16" ],
+      [ "name", "string" ],
+      [ "maxHealth", "uint16" ]
+    ]
+  },
+  "34": {
+    "type": "vehicleRemove",
+    "comment": "playerId is the killer ID (if known)",
+    "format": [
+      [ "vehicleId", "uint16" ],
+      [ "killerKnown", "bool" ],
+      [ "playerId", "uint8" ]
+    ]
+  },
+  "48": {
+    "type": "fobAdd",
+    "multiple": true,
+    "format": [
+      [ "objectId", "uint32" ],
+      [ "team", "uint8" ],
+      [ "position", "collection", [
+        [ "x", "int16" ],
+        [ "y", "int16" ],
+        [ "z", "int16" ]
+      ] ]
+    ]
+  },
+  "49": {
+    "type": "fobRemove",
+    "multiple": true,
+    "format": [
+      [ "objectId", "uint32" ]
+    ]
+  },
+  "64": {
+    "type": "flagUpdate",
+    "comment": "owner: 0=neutral, 1=team1, 2=team2",
+    "format": [
+      [ "flagId", "uint16" ],
+      [ "owner", "uint8" ]
+    ]
+  },
+  "66": {
+    "type": "flagList",
+    "comment": "owner: 0=neutral, 1=team1, 2=team2",
+    "multiple": true,
+    "format": [
+      [ "flagId", "uint16" ],
+      [ "owner", "uint8" ],
+      [ "position", "collection", [
+        [ "x", "int16" ],
+        [ "y", "int16" ],
+        [ "z", "int16" ]
+      ] ],
+      [ "radius", "uint16" ]
+    ]
+  },
+  "80": {
+    "type": "kill",
+    "comment": "attacker and victim are player IDs",
+    "format": [
+      [ "attacker", "uint8" ],
+      [ "victim", "uint8" ],
+      [ "weapon", "string" ]
+    ]
+  },
+  "81": {
+    "type": "chat",
+    "format": [
+      [ "channel", "uint8" ],
+      [ "playerId", "uint8" ],
+      [ "message", "string" ]
+    ]
+  },
+  "82": {
+    "type": "ticketsTeam1",
+    "format": [
+      [ "tickets", "uint16" ]
+    ]
+  },
+  "83": {
+    "type": "ticketsTeam2",
+    "format": [
+      [ "tickets", "uint16" ]
+    ]
+  },
+  "96": {
+    "type": "rallyAdd",
+    "comment": "groupId is a 1-byte team prefix and a 7-byte squad number",
+    "format": [
+      [ "groupId", "uint8" ],
+      [ "position", "collection", [
+        [ "x", "int16" ],
+        [ "y", "int16" ],
+        [ "z", "int16" ]
+      ] ]
+    ]
+  },
+  "97": {
+    "type": "rallyRemove",
+    "comment": [
+      "groupId is a 1-byte team prefix and a 7-byte squad number",
+      "Warning: may be called even when no rally exists"
+    ],
+    "format": [
+      [ "groupId", "uint8" ]
+    ]
+  },
+  "112": {
+    "type": "cacheAdd",
+    "multiple": true,
+    "format": [
+      [ "cacheId", "uint8" ],
+      [ "position", "collection", [
+        [ "x", "int16" ],
+        [ "y", "int16" ],
+        [ "z", "int16" ]
+      ] ]
+    ]
+  },
+  "113": {
+    "type": "cacheRemove",
+    "format": [
+      [ "cacheId", "uint8" ]
+    ]
+  },
+  "114": {
+    "type": "cacheReveal",
+    "multiple": true,
+    "format": [
+      [ "cacheId", "uint8" ]
+    ]
+  },
+  "115": {
+    "type": "intelChange",
+    "format": [
+      [ "cacheId", "int8" ]
+    ]
+  },
+  "160": {
+    "type": "revive",
+    "comment": "medic and victim are player IDs",
+    "format": [
+      [ "medic", "uint8" ],
+      [ "victim", "uint8" ]
+    ]
+  },
+  "161": {
+    "type": "kitAllocated",
+    "format": [
+      [ "playerId", "uint8" ],
+      [ "kitName", "string" ]
+    ]
+  },
+  "162": {
+    "type": "squadName",
+    "comment": [
+      "groupId is a 1-byte team prefix and a 7-byte squad number",
+      "Squad 8 and 9 unavailable due to engine bug"
+    ],
+    "format": [
+      [ "groupId", "uint8" ],
+      [ "squadName", "string" ]
+    ]
+  },
+  "240": {
+    "type": "roundEnd",
+    "format": []
+  },
+  "241": {
+    "type": "tick",
+        "format": [
+      [ "time", "uint8" ]
+    ]
+  },
+  "253": {
+    "type": "adminError",
+    "format": []
+  },
+  "254": {
+    "type": "adminMessage",
+    "format": []
+  }
+}
