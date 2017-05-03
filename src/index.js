@@ -2,6 +2,7 @@ import R from 'ramda';
 import {
   // segment,
   getCString,
+  getBitArray,
   processLog
 } from './lib';
 import schemas from './messages';
@@ -12,47 +13,50 @@ const processValue = (data, position, typeData, accumulator) => {
   switch (type) {
     case 'int8':
       return [ 1, data.getInt8(position, true) ];
+
     case 'uint8':
       return [ 1, data.getUint8(position, true) ];
+
     case 'int16':
       return [ 2, data.getInt16(position, true) ];
+
     case 'uint16':
       return [ 2, data.getUint16(position, true) ];
+
     case 'int32':
       return [ 4, data.getInt32(position, true) ];
+
     case 'uint32':
       return [ 4, data.getUint32(position, true) ];
+
     case 'float32':
       return [ 4, data.getFloat32(position, true) ];
+
     case 'float64':
       return [ 8, data.getFloat64(position, true) ];
+
     case 'string':
       const string = getCString(data.buffer, position);
       const stringLength = string.length + 1; // Account for null byte
       return [ stringLength, string ];
+
     case 'bool':
       const bool = data.getUint8(position, true) === 1;
       return [ 1, bool ];
+
     case 'collection':
       const [ , collection ] = typeData;
       return applySchemaOnce(position, collection, data);
-    // case 'conditional':
-    //   const [ , key, conditionals ] = typeData;
-    //   // Extract an array of conditionals from the flag key
-    //   const conditionalTypeData = R.compose(
-    //     // Remove types flagged as false
-    //     R.filter(R.identity),
-    //     R.zipWith(R.flip(R.and), conditionals),
-    //     // Convert to little-endian
-    //     R.reverse,
-    //     // Convert to an array of booleans
-    //     R.map(R.equals('1')),
-    //     R.splitEvery(1),
-    //     x => x.toString(2),
-    //     // Get flag value
-    //     R.prop(key)
-    //   )(accumulator);
-    //   return applySchemaOnce(position, conditionalTypeData, data);
+
+    case 'bitmask':
+      const [ , mask ] = typeData;
+      const bytes = Math.ceil(mask.length / 8);
+      const bitmask = R.compose(
+        R.zipObj(mask),
+        getBitArray
+      )(data.buffer, position, bytes);
+      return [ bytes, bitmask ];
+
     default:
       throw new TypeError(`Invalid schema type "${type}"`);
   }

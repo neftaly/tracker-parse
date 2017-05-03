@@ -34,7 +34,44 @@ const getCString = (buffer, offset) => {
   );
 };
 
+// Convert a big-endian Uint8 into to an array of bits
+// Uint8 => [ ...bits ]
+const getByteArray = R.compose(
+  // Add unset bits
+  list => R.concat(
+    R.times(R.always(0), 8 - list.length),
+    list
+  ),
+  // Convert number to binary array
+  R.map(Number),
+  R.splitEvery(1),
+  n => n.toString(2),
+  // Enforce strict type
+  R.tap(n => {
+    if (!Number.isInteger(n) || n < 0 || n >= 256) {
+      throw new TypeError('Expected an unsigned 8-bit integer');
+    }
+  })
+);
+
+// Extract an array of bits from an array buffer
+// :: buffer => offset => bitWidth => string
+const getBitArray = (buffer, offset, bytes) => {
+  const data = new DataView(
+    buffer.slice(offset, bytes)
+  );
+  return R.compose(
+    R.reverse, // Convert to little-endian
+    R.chain(R.compose(
+      getByteArray,
+      n => data.getUint8(n + offset, true)
+    )),
+    R.times(R.identity)
+  )(bytes);
+};
+
 // Slice a log up into an array of events
+// :: buffer => [ ...events ]
 const processLog = data => {
   const log = new DataView(
     pako.inflate(data).buffer
@@ -59,5 +96,6 @@ const processLog = data => {
 export {
   segment,
   getCString,
+  getBitArray,
   processLog
 };
