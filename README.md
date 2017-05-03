@@ -1,5 +1,6 @@
 # tracker-parse
 Converts a pr-tracker log to an array of events.
+Values with decoding errors are set to `null`.
 
 ## usage
 ```js
@@ -41,11 +42,11 @@ and the associated decoding instructions.
 Message type name.
 Passed on directly to the parsed object.
 
-### `comment`: **string** OR **array**
+### `comment` *optional*: **string** OR **array**
 Comments regarding a particular message.
 For multiple lines, use an array of strings.
 
-### `multiple`: **boolean** *optional*
+### `multiple` *optional*: **boolean**
 Whether a message can contain multiple sets of data.
 
   * `true`: message will be continually parsed until the entire chunk is read

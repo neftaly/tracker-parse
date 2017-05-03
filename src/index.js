@@ -76,16 +76,15 @@ const processValue = (data, position, typeData, accumulator) => {
 // Use a schema to convert an ArrayBuffer to JS data
 const applySchemaOnce = (offset, format, data) => R.reduce(
   ([ offset, accumulator ], [ key, ...typeData ]) => {
-    // TODO: Remove try/catch
-    // Catch RangeView errors for the purpose of debugging conditional data
-    const [
-      length,
-      value
-    ] = (() => {
+    // Gracefully handle RangeErrors when buffer bounds are exceeded
+    const [ length, value ] = (() => {
       try {
         return processValue(data, offset, typeData, accumulator);
       } catch (e) {
-        return [ 0, null ];
+        if (e instanceof RangeError) {
+          return [ 0, null ];
+        }
+        throw e;
       }
     })();
     return [
