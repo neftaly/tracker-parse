@@ -133,7 +133,7 @@
       [ "owner", "uint8" ]
     ]
   },
-  "66": {
+  "65": {
     "type": "flagList",
     "comment": "owner: 0=neutral, 1=team1, 2=team2",
     "multiple": true,
@@ -268,10 +268,10 @@
   },
   "253": {
     "type": "adminError",
-    "format": []
+    "format": null
   },
   "254": {
     "type": "adminMessage",
-    "format": []
+    "format": null
   }
 }

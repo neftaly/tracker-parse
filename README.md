@@ -9,9 +9,9 @@ import parse from 'tracker-parse';
 const events = parse(log);
 ```
 
-## messages.json format
+## Message schema
 
-messages.json contains a map of message IDs,
+[messages.json](./src/messages.json) contains a map of message IDs,
 and the associated decoding instructions.
 
 ```json
