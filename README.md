@@ -1,6 +1,5 @@
 # tracker-parse
 Converts a pr-tracker log to an array of events.
-Values with decoding errors are set to `null`.
 
 ## usage
 ```js
@@ -9,9 +8,11 @@ import parse from 'tracker-parse';
 const events = parse(log);
 ```
 
+Values with decoding errors are set to `null`.
+
 ## Message schema
 
-[messages.json](./src/messages.json) contains a map of message IDs,
+[schema.json](./schema.json) contains a map of message IDs,
 and the associated decoding instructions.
 
 ```json

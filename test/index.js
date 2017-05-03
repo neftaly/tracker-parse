@@ -1,6 +1,6 @@
 import tape from 'tape';
 import fs from 'fs';
-import parse from '../src/index';
+import parse from '../index';
 
 const rawFile = fs.readFileSync(
   './test/fixtures/tracker_2017_04_18_12_31_11.PRdemo'

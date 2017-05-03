@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "semistandard | snazzy && babel-tape-runner ./test/**/*.js | faucet",
-    "build": "babel -q src --copy-files --out-dir dist",
+    "build": "babel -q index.js --out-dir dist && cp schema.json dist",
     "prepublish": "npm test && npm run build"
   },
   "repository": "https://github.com/neftaly/tracker-data",
