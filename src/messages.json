@@ -23,23 +23,7 @@
     "type": "playerUpdate",
     "__TODO_multiple": true,
     "format": [
-      [ "flags", "bitmask", [
-        "team",
-        "squad",
-        "vehicle",
-        "health",
-        "score",
-        "teamworkScore",
-        "kills",
-        "teamKills",
-        "deaths",
-        "ping",
-        "isAlive",
-        "isJoining",
-        "position",
-        "yaw",
-        "kitName"
-      ] ],
+      [ "flags", "bitmask", 2 ],
       [ "playerId", "uint8" ],
       [ "status", "conditional", "flags", [
         [ "team", "uint8" ],
@@ -89,12 +73,7 @@
     "type": "vehicleUpdate",
     "__TODO_multiple": true,
     "format": [
-      [ "flags", "bitmask", [
-        "team",
-        "position",
-        "yaw",
-        "health"
-      ] ],
+      [ "flags", "bitmask", 1 ],
       [ "vehicleId", "int16" ],
       [ "status", "conditional", "flags", [
         [ "team", "uint8" ],

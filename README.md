@@ -19,12 +19,7 @@ and the associated decoding instructions.
     "type": "vehicleUpdate",
     "multiple": true,
     "format": [
-      [ "flags", "bitmask", [
-        "team",
-        "position",
-        "yaw",
-        "health"
-      ] ],
+      [ "flags", "bitmask", 1 ],
       [ "vehicleId", "int16" ],
       [ "status", "conditional", "flags", [
         [ "team", "uint16" ],
@@ -90,14 +85,10 @@ The third argument contains a nested list of type definitions.
 
 #### `bitmask`
 A bitmask is a list of bit values.
-The third argument contains a nested list of keys.
-
-Bitmask keys must be unique.
+The third argument indicates the bitmask length in bytes.
 
 ```js
-[ key, "bitmask", [
-  ...keys
-] ]
+[ key, "bitmask", length ]
 ```
 
 #### `conditional`

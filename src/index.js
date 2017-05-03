@@ -49,14 +49,12 @@ const processValue = (data, position, typeData, accumulator) => {
       return applySchemaOnce(position, collection, data);
 
     case 'bitmask':
-      const [ , mask ] = typeData;
-      const bytes = Math.ceil(mask.length / 8);
+      const [ , bitmaskLength ] = typeData;
       const bitmask = R.compose(
-        R.zip(mask),
         R.map(Boolean),
         getBitArray
-      )(data.buffer, position, bytes);
-      return [ bytes, bitmask ];
+      )(data.buffer, position, bitmaskLength);
+      return [ bitmaskLength, bitmask ];
 
     case 'conditional':
       const [ , bitmaskKey, conditionals ] = typeData;
@@ -66,7 +64,6 @@ const processValue = (data, position, typeData, accumulator) => {
         R.filter(R.identity),
         R.zipWith(R.flip(R.and), conditionals),
         // Get bitmask
-        R.map(R.prop(1)),
         R.prop(bitmaskKey)
       )(accumulator);
       return applySchemaOnce(position, conditionalFormat, data);
