@@ -19,9 +19,9 @@
       [ "opforTickets", "uint16" ]
     ]
   },
-  "__TODO_16": {
+  "16": {
     "type": "playerUpdate",
-    "multiple": true,
+    "__TODO_multiple": true,
     "format": [
       [ "flags", "bitmask", [
         "team",
@@ -38,8 +38,7 @@
         "isJoining",
         "position",
         "yaw",
-        "kitName",
-        null
+        "kitName"
       ] ],
       [ "playerId", "uint8" ],
       [ "status", "conditional", "flags", [
@@ -69,30 +68,6 @@
       ] ]
     ]
   },
-  "16": {
-    "type": "playerUpdate",
-    "format": null,
-    "format": [
-      [ "flags", "bitmask", [
-        "team",
-        "squad",
-        "vehicle",
-        "health",
-        "score",
-        "teamworkScore",
-        "kills",
-        "teamKills",
-        "deaths",
-        "ping",
-        "isAlive",
-        "isJoining",
-        "position",
-        "yaw",
-        "kitName"
-      ] ],
-      [ "playerId", "uint8" ]
-    ]
-  },
   "17": {
     "type": "playerAdd",
     "multiple": true,
@@ -110,9 +85,9 @@
       [ "playerId", "string" ]
     ]
   },
-  "__TODO_32": {
+  "32": {
     "type": "vehicleUpdate",
-    "multiple": true,
+    "__TODO_multiple": true,
     "format": [
       [ "flags", "bitmask", [
         "team",
@@ -122,27 +97,15 @@
       ] ],
       [ "vehicleId", "int16" ],
       [ "status", "conditional", "flags", [
-        [ "team", "uint16" ],
+        [ "team", "uint8" ],
         [ "position", "collection", [
           [ "x", "int16" ],
           [ "y", "int16" ],
           [ "z", "int16" ]
         ] ],
-        [ "yaw", "int16" ],
+        [ "yaw", "int8" ],
         [ "health", "int16" ]
       ] ]
-    ]
-  },
-  "32": {
-    "type": "vehicleUpdate",
-    "format": [
-      [ "flags", "bitmask", [
-        "team",
-        "position",
-        "yaw",
-        "health"
-      ] ],
-      [ "vehicleId", "int16" ]
     ]
   },
   "33": {

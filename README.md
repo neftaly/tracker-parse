@@ -74,7 +74,7 @@ Valid types are:
   * **bool**: 1 byte boolean
   * **collection**: nested group of values
   * **bitmask**: group of true/false bytes
-  * ~~**conditional**: nested group of values, read depending on prior `byte array`~~
+  * **conditional**: nested group of values, read depending on prior `bitmask`
 
 Number types are expected to be little-endian.
 
@@ -92,16 +92,15 @@ The third argument contains a nested list of type definitions.
 A bitmask is a list of bit values.
 The third argument contains a nested list of keys.
 
+Bitmask keys must be unique.
+
 ```js
 [ key, "bitmask", [
   ...keys
 ] ]
 ```
 
-Bitmasks are read in multiples of 8.
-
 #### `conditional`
-**Not yet implemented**
 
 A conditional is a nested group of values,
 that are turned on or off depending on a prior `bitmask`.

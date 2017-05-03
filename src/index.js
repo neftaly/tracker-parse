@@ -52,10 +52,24 @@ const processValue = (data, position, typeData, accumulator) => {
       const [ , mask ] = typeData;
       const bytes = Math.ceil(mask.length / 8);
       const bitmask = R.compose(
-        R.zipObj(mask),
+        R.zip(mask),
+        R.map(Boolean),
         getBitArray
       )(data.buffer, position, bytes);
       return [ bytes, bitmask ];
+
+    case 'conditional':
+      const [ , bitmaskKey, conditionals ] = typeData;
+      // Extract an array of conditionals from the flag key
+      const conditionalFormat = R.compose(
+        // Remove types flagged as false
+        R.filter(R.identity),
+        R.zipWith(R.flip(R.and), conditionals),
+        // Get bitmask
+        R.map(R.prop(1)),
+        R.prop(bitmaskKey)
+      )(accumulator);
+      return applySchemaOnce(position, conditionalFormat, data);
 
     default:
       throw new TypeError(`Invalid schema type "${type}"`);
@@ -65,10 +79,18 @@ const processValue = (data, position, typeData, accumulator) => {
 // Use a schema to convert an ArrayBuffer to JS data
 const applySchemaOnce = (offset, format, data) => R.reduce(
   ([ offset, accumulator ], [ key, ...typeData ]) => {
+    // TODO: Remove try/catch
+    // Catch RangeView errors for the purpose of debugging conditional data
     const [
       length,
       value
-    ] = processValue(data, offset, typeData, accumulator);
+    ] = (() => {
+      try {
+        return processValue(data, offset, typeData, accumulator);
+      } catch (e) {
+        return [ 0, null ];
+      }
+    })();
     return [
       offset + length,
       R.assoc(key, value, accumulator)
