@@ -187,7 +187,7 @@ const applySchema = ({ type, format, multiple }, data) => {
 };
 
 // Parse event log to array, segmented every tick
-const parse = R.compose(
+const parser = R.compose(
   // Remove unknown data
   R.filter(R.identity),
   // Convert events to POJOs, according to schema
@@ -210,4 +210,4 @@ const parse = R.compose(
   processLog
 );
 
-export default parse;
+export default parser;

@@ -1,11 +1,11 @@
-# tracker-parse
+# tracker-parser
 Converts a pr-tracker log to an array of events.
 
 ## usage
 ```js
-import parse from 'tracker-parse';
+import parser from 'tracker-parser';
 
-const events = parse(log);
+const events = parser(log);
 ```
 
 Values with decoding errors are set to `null`.

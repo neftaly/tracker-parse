@@ -1,5 +1,5 @@
 {
-  "name": "tracker-parse",
+  "name": "tracker-parser",
   "version": "0.0.0",
   "main": "dist/index.js",
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "babel -q index.js --out-dir dist && cp schema.json dist",
     "prepublish": "npm test && npm run build"
   },
-  "repository": "https://github.com/neftaly/tracker-data",
+  "repository": "https://github.com/neftaly/tracker-parser",
   "dependencies": {
     "pako": "^1.0.5",
     "ramda": "^0.23.0",
