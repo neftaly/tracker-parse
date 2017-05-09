@@ -69,7 +69,7 @@
     "type": "playerRemove",
     "multiple": true,
     "format": [
-      [ "playerId", "string" ]
+      [ "playerId", "uint8" ]
     ]
   },
   "32": {

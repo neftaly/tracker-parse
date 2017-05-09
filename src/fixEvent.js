@@ -167,12 +167,13 @@ const fixVehicleUpdate = event => {
     offset = offset + 1;
     item.vehicleId = view.getInt16(offset, true);
     offset = offset + 2;
+    item.status = {};
     if (item.flags[0]) {
-      item.team = view.getInt8(offset, true);
+      item.status.team = view.getInt8(offset, true);
       offset = offset + 1;
     }
     if (item.flags[1]) {
-      item.position = {
+      item.status.position = {
         x: view.getInt16(offset + 0, true),
         y: view.getInt16(offset + 2, true),
         z: view.getInt16(offset + 4, true)
@@ -180,11 +181,11 @@ const fixVehicleUpdate = event => {
       offset = offset + 6;
     }
     if (item.flags[2]) {
-      item.yaw = view.getInt16(offset, true);
+      item.status.yaw = view.getInt16(offset, true);
       offset = offset + 2;
     }
     if (item.flags[3]) {
-      item.health = view.getInt16(offset, true);
+      item.status.health = view.getInt16(offset, true);
       offset = offset + 2;
     }
     data.push(item);
