@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "semistandard | snazzy && babel-tape-runner ./test/**/*.js | faucet",
-    "build": "babel -q index.js --out-dir dist && cp schema.json dist",
+    "build": "babel -q src --copy-files --out-dir dist",
     "prepublish": "npm test && npm run build"
   },
   "repository": "https://github.com/neftaly/tracker-parser",
@@ -33,7 +33,7 @@
   "semistandard": {
     "parser": "babel-eslint",
     "ignore": [
-      "/dist/"
+      "dist"
     ],
     "env": {
       "browser": true

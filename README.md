@@ -12,7 +12,7 @@ Values with decoding errors are set to `null`.
 
 ## Message schema
 
-[schema.json](./schema.json) contains a map of message IDs,
+[schema.json](./src/schema.json) contains a map of message IDs,
 and the associated decoding instructions.
 
 ```json
