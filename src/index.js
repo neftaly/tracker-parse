@@ -7,6 +7,7 @@ import {
   flatten
 } from './lib';
 import fixEvent from './fixEvent';
+import state from './state';
 
 // Process a single value from data at position by type
 const processValue = (data, position, typeData, accumulator) => {
@@ -157,4 +158,5 @@ const parser = R.compose(
   processLog
 );
 
+export { state };
 export default parser;

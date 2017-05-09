@@ -2,6 +2,22 @@ import R from 'ramda';
 import { TextDecoder } from 'text-encoding';
 import pako from 'pako';
 
+// Split an array every time the predicate returns true
+// :: f => (array -> Boolean) -> f a -> f a
+const segment = R.curry((fn, array) => {
+  const chunks = [];
+  let chunk = [];
+  for (let value of array) {
+    if (fn(value)) {
+      chunks.push(chunk);
+      chunk = [];
+    }
+    chunk.push(value);
+  }
+  chunks.push(chunk);
+  return chunks;
+});
+
 // Extract a null-terminated string from an array buffer
 // :: buffer => offset => string
 const getCString = (buffer, offset) => {
@@ -85,6 +101,7 @@ const flatten = event => {
 };
 
 export {
+  segment,
   getCString,
   getBitArray,
   processLog,
