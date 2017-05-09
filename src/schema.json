@@ -231,7 +231,7 @@
   "115": {
     "type": "intelChange",
     "format": [
-      [ "cacheId", "int8" ]
+      [ "points", "int8" ]
     ]
   },
   "160": {

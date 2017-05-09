@@ -131,11 +131,11 @@ const tickParser = R.reduce((partial, event) => {
     );
   }
   if (type === 'intelChange') {
-    const { cacheId } = data;
+    const { points } = data;
     return R.over(
-      R.lensPath(['caches', cacheId, 'intel']),
+      R.lensPath(['intel']),
       R.compose(
-        R.add(1),
+        R.add(points),
         R.defaultTo(0)
       ),
       partial
