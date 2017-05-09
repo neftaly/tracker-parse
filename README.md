@@ -53,10 +53,8 @@ Whether a message can contain multiple sets of data.
   * `true`: message will be continually parsed until the entire chunk is read
   * `false`: message data beyond that defined in `format` will be ignored
 
-### `format`: **array** OR **null**
+### `format`: **array**
 An list of `[ key, type, ... ]` tuples, defining data format and order.
-
-If `null`, raw `Uint8Array` data will be returned instead.
 
 Valid types are:
   * **int8**: 1 byte signed integer
@@ -69,11 +67,18 @@ Valid types are:
   * **float64**: 8 byte float
   * **string**: null-terminated string
   * **bool**: 1 byte boolean
+  * **null**: 0-byte placeholder value
   * **collection**: nested group of values
   * **bitmask**: group of true/false bytes
+  * **condCollection**: nested group of values, read depending on first value
   * **conditional**: nested group of values, read depending on prior `bitmask`
 
 Number types are expected to be little-endian.
+
+#### `null`
+Empty placeholder value. The key/value will not be included in output data.
+
+Note that this is the string `"null"`, not the value `null`.
 
 #### `collection`
 A collection is a nested list of values.
@@ -93,7 +98,21 @@ The third argument indicates the bitmask length in bytes.
 [ key, "bitmask", length ]
 ```
 
+#### `condCollection`
+**Note**: WIP
+
+Same as a collection,
+except that values after the first are only read if first is > 0;
+
+```js
+[ key, "collection", [
+  firstType,
+  ...types
+] ]
+```
+
 #### `conditional`
+**Note**: WIP
 
 A conditional is a nested group of values,
 that are turned on or off depending on a prior `bitmask`.

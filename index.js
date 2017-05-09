@@ -1,82 +1,11 @@
 import R from 'ramda';
-import { TextDecoder } from 'text-encoding';
-import pako from 'pako';
 import schemas from './schema.json';
-
-// Extract a null-terminated string from an array buffer
-// :: buffer => offset => string
-const getCString = (buffer, offset) => {
-  // Extract string and everything after it
-  const head = new Uint8Array(
-    buffer.slice(offset)
-  );
-  // Find the first null char
-  const end = R.indexOf(0, head);
-  const terminator = end < 0 ? head.length : end;
-  // Extract everything before the null char
-  return new TextDecoder('utf8').decode(
-    head.slice(0, terminator)
-  );
-};
-
-// Convert a big-endian Uint8 into to an array of bits
-// Uint8 => [ ...bits ]
-const getByteArray = R.compose(
-  // Add unset bits
-  list => R.concat(
-    R.times(R.always(0), 8 - list.length),
-    list
-  ),
-  // Convert number to binary array
-  R.map(Number),
-  R.splitEvery(1),
-  n => n.toString(2),
-  // Enforce strict type
-  R.tap(n => {
-    if (!Number.isInteger(n) || n < 0 || n >= 256) {
-      throw new TypeError('Expected an unsigned 8-bit integer');
-    }
-  })
-);
-
-// Extract an array of bits from an array buffer
-// :: buffer => offset => bitWidth => string
-const getBitArray = (buffer, offset, bytes) => {
-  const data = new DataView(
-    buffer.slice(offset, bytes)
-  );
-  return R.compose(
-    R.reverse, // Convert to little-endian
-    R.chain(R.compose(
-      getByteArray,
-      n => data.getUint8(n + offset, true)
-    )),
-    R.times(R.identity)
-  )(bytes);
-};
-
-// Slice a log up into an array of events
-// :: buffer => [ ...events ]
-const processLog = data => {
-  const log = new DataView(
-    pako.inflate(data).buffer
-  );
-  const events = [];
-  for (let offset = 0; offset < log.byteLength;) {
-    // Calculate event size
-    const length = log.getUint16(offset, true);
-    const start = offset + 2;
-    const end = start + length;
-    // Read event chunk
-    const event = new Uint8Array(
-      log.buffer.slice(start, end)
-    );
-    // Attach chunk
-    events.push(event);
-    offset = end;
-  }
-  return events;
-};
+import {
+  getCString,
+  getBitArray,
+  processLog
+} from './lib';
+import fixEvent from './fixEvent';
 
 // Process a single value from data at position by type
 const processValue = (data, position, typeData, accumulator) => {
@@ -115,6 +44,9 @@ const processValue = (data, position, typeData, accumulator) => {
       const bool = data.getUint8(position, true) === 1;
       return [ 1, bool ];
 
+    case 'null':
+      return [ 0, undefined ];
+
     case 'collection':
       const [ , collection ] = typeData;
       return applySchemaOnce(position, collection, data);
@@ -124,7 +56,7 @@ const processValue = (data, position, typeData, accumulator) => {
       const bitmask = R.compose(
         R.map(Boolean),
         getBitArray
-      )(data.buffer, position, bitmaskLength);
+      )(position, bitmaskLength, data.buffer);
       return [ bitmaskLength, bitmask ];
 
     case 'conditional':
@@ -138,6 +70,17 @@ const processValue = (data, position, typeData, accumulator) => {
         R.prop(bitmaskKey)
       )(accumulator);
       return applySchemaOnce(position, conditionalFormat, data);
+
+    case 'condCollection':
+      const [ , condCollection ] = typeData;
+      const first = processValue(
+        data,
+        position,
+        R.tail(condCollection[0]),
+        accumulator
+      );
+      if (first[1] < 0) return first;
+      return applySchemaOnce(position, condCollection, data);
 
     default:
       throw new TypeError(`Invalid schema type "${type}"`);
@@ -169,7 +112,7 @@ const applySchemaOnce = (offset, format, data) => R.reduce(
 
 // Apply schema against data multiple times, until buffer has been read
 const applySchema = ({ type, format, multiple }, data) => {
-  if (format === null) return new Uint8Array(data.buffer);
+  if (format === null) return data.buffer;
   const { byteLength } = data;
   let results = [];
   for (let offset = 0; offset < byteLength;) {
@@ -186,8 +129,9 @@ const applySchema = ({ type, format, multiple }, data) => {
   return results;
 };
 
-// Parse event log to array, segmented every tick
+// Parse event log to array
 const parser = R.compose(
+  R.map(fixEvent),
   // Remove unknown data
   R.filter(R.identity),
   // Convert events to POJOs, according to schema

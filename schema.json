@@ -21,25 +21,28 @@
   },
   "16": {
     "type": "playerUpdate",
-    "__TODO_multiple": true,
-    "format": [
+    "comment": "Note that teamKills is ignored, and the placeholder after ping",
+    "multiple": true,
+    "format": null,
+    "format__TODO_": [
       [ "flags", "bitmask", 2 ],
       [ "playerId", "uint8" ],
       [ "status", "conditional", "flags", [
-        [ "team", "uint8" ],
+        [ "team", "int8" ],
         [ "squad", "uint8" ],
-        [ "vehicle", "collection", [
+        [ "vehicle", "condCollection", [
           [ "vehicleId", "int16" ],
-          [ "seatName", "string" ],
-          [ "SeatNumber", "uint8" ]
+          [ "seat", "string" ],
+          [ "slot", "int8" ]
         ] ],
-        [ "health", "uint8" ],
+        [ "health", "int8" ],
         [ "score", "int16" ],
         [ "teamworkScore", "int16" ],
         [ "kills", "int16" ],
-        [ "teamKills", "int16" ],
+        [ "teamKills", "null" ],
         [ "deaths", "int16" ],
         [ "ping", "int16" ],
+        [ "placeholder", "null" ],
         [ "isAlive", "bool" ],
         [ "isJoining", "bool" ],
         [ "position", "collection", [
@@ -48,7 +51,7 @@
           [ "z", "int16" ]
         ] ],
         [ "yaw", "int16" ],
-        [ "kitName", "string" ]
+        [ "kit", "string" ]
       ] ]
     ]
   },
@@ -71,12 +74,13 @@
   },
   "32": {
     "type": "vehicleUpdate",
-    "__TODO_multiple": true,
-    "format": [
+    "multiple": true,
+    "format": null,
+    "format__TODO_": [
       [ "flags", "bitmask", 1 ],
       [ "vehicleId", "int16" ],
       [ "status", "conditional", "flags", [
-        [ "team", "uint8" ],
+        [ "team", "int8" ],
         [ "position", "collection", [
           [ "x", "int16" ],
           [ "y", "int16" ],
