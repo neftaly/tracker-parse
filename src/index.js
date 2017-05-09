@@ -132,30 +132,27 @@ const applySchema = ({ type, format, multiple }, data) => {
 
 // Parse event log to array
 const parser = R.compose(
-  R.map(R.compose(
+  R.chain(R.compose(
     // Unnest events
     flatten,
     // Temporary xUpdate fix
-    fixEvent
-  )),
-  // Remove unknown data
-  R.filter(R.identity),
-  // Convert events to POJOs, according to schema
-  R.map(event => {
-    const schema = schemas[event[0]];
-    if (!schema) {
-      console.warn('Unknown message type: ' + event[0]);
-      return null;
+    fixEvent,
+    // Convert events to POJOs, according to schema
+    event => {
+      const schema = schemas[event[0]];
+      if (!schema) {
+        throw new TypeError('Unknown message type: ' + event[0]);
+      }
+      const data = new DataView(
+        event.slice(1).buffer
+      );
+      // Apply schema to data
+      return {
+        type: schema.type,
+        data: applySchema(schema, data)
+      };
     }
-    const data = new DataView(
-      event.slice(1).buffer
-    );
-    // Apply schema to data
-    return {
-      type: schema.type,
-      data: applySchema(schema, data)
-    };
-  }),
+  )),
   // Read log & split into individual events
   processLog
 );

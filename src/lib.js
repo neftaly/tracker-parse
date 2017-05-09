@@ -72,13 +72,13 @@ const processLog = data => {
 };
 
 // Unnest events with multiple updates
-// :: event => ...events
+// :: event => [ ...events ]
 const flatten = event => {
   const {
     data: nestedData,
     ...rest
   } = event;
-  return R.chain(
+  return R.map(
     data => ({ ...rest, data }),
     nestedData
   );
