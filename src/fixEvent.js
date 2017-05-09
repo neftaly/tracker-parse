@@ -34,7 +34,7 @@ const fixPlayerUpdate = event => {
     const item = {};
     const flags = view.getUint16(offset, true);
     offset = offset + 2;
-    item.playerId = view.getUint8(offset);
+    item.id = view.getUint8(offset);
     offset = offset + 1;
     // item.zflags = R.compose(
     //   R.map(Boolean),
@@ -72,9 +72,9 @@ const fixPlayerUpdate = event => {
     }
     if (flags & playerUpdateFlags.vehicle) {
       item.status.vehicle = {};
-      item.status.vehicle.vehicleId = view.getInt16(offset, true);
+      item.status.vehicle.id = view.getInt16(offset, true);
       offset = offset + 2;
-      if (item.status.vehicle.vehicleId >= 0) {
+      if (item.status.vehicle.id >= 0) {
         item.status.vehicle.seat = getCString(event.data, offset);
         offset = offset + item.status.vehicle.seat.length + 1;
         item.status.vehicle.slot = view.getInt8(offset);
@@ -165,7 +165,7 @@ const fixVehicleUpdate = event => {
       getBitArray
     )(offset, 1, event.data);
     offset = offset + 1;
-    item.vehicleId = view.getInt16(offset, true);
+    item.id = view.getInt16(offset, true);
     offset = offset + 2;
     item.status = {};
     if (item.flags[0]) {

@@ -31,24 +31,24 @@ const tickParser = R.reduce((partial, event) => {
 
   // Vehicle changes
   if (type === 'vehicleAdd') {
-    const { vehicleId, ...rest } = data;
+    const { id, ...rest } = data;
     return R.assocPath(
-      ['vehicles', vehicleId],
+      ['vehicles', id],
       rest,
       partial
     );
   }
   if (type === 'vehicleRemove') {
-    const { vehicleId } = data;
+    const { id } = data;
     return R.dissocPath(
-      ['vehicles', vehicleId],
+      ['vehicles', id],
       partial
     );
   }
   if (type === 'vehicleUpdate') {
-    const { vehicleId, status } = data;
+    const { id, status } = data;
     return R.over(
-      R.lensPath(['vehicles', vehicleId, 'status']),
+      R.lensPath(['vehicles', id, 'status']),
       R.merge(R.__, status),
       partial
     );
@@ -56,17 +56,17 @@ const tickParser = R.reduce((partial, event) => {
 
   // FOBs
   if (type === 'fobAdd') {
-    const { objectId, ...rest } = data;
+    const { id, ...rest } = data;
     return R.assocPath(
-      ['fobs', objectId],
+      ['fobs', id],
       rest,
       partial
     );
   }
   if (type === 'fobRemove') {
-    const { objectId } = data;
+    const { id } = data;
     return R.dissocPath(
-      ['fobs', objectId],
+      ['fobs', id],
       partial
     );
   }
@@ -108,24 +108,24 @@ const tickParser = R.reduce((partial, event) => {
 
   // Caches
   if (type === 'cacheAdd') {
-    const { cacheId, ...rest } = data;
+    const { id, ...rest } = data;
     return R.assocPath(
-      ['caches', cacheId],
+      ['caches', id],
       rest,
       partial
     );
   }
   if (type === 'cacheRemove') {
-    const { cacheId } = data;
+    const { id } = data;
     return R.dissocPath(
-      ['caches', cacheId],
+      ['caches', id],
       partial
     );
   }
   if (type === 'cacheReveal') {
-    const { cacheId } = data;
+    const { id } = data;
     return R.assocPath(
-      ['caches', cacheId, 'revealed'],
+      ['caches', id, 'revealed'],
       true,
       partial
     );

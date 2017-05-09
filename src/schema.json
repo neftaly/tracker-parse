@@ -26,12 +26,12 @@
     "format": null,
     "format__TODO_": [
       [ "flags", "bitmask", 2 ],
-      [ "playerId", "uint8" ],
+      [ "id", "uint8" ],
       [ "status", "conditional", "flags", [
         [ "team", "int8" ],
         [ "squad", "uint8" ],
         [ "vehicle", "condCollection", [
-          [ "vehicleId", "int16" ],
+          [ "id", "int16" ],
           [ "seat", "string" ],
           [ "slot", "int8" ]
         ] ],
@@ -59,7 +59,7 @@
     "type": "playerAdd",
     "multiple": true,
     "format": [
-      [ "playerId", "uint8" ],
+      [ "id", "uint8" ],
       [ "name", "string" ],
       [ "hash", "string" ],
       [ "ip", "string" ]
@@ -69,7 +69,7 @@
     "type": "playerRemove",
     "multiple": true,
     "format": [
-      [ "playerId", "uint8" ]
+      [ "id", "uint8" ]
     ]
   },
   "32": {
@@ -78,7 +78,7 @@
     "format": null,
     "format__TODO_": [
       [ "flags", "bitmask", 1 ],
-      [ "vehicleId", "int16" ],
+      [ "id", "int16" ],
       [ "status", "conditional", "flags", [
         [ "team", "int8" ],
         [ "position", "collection", [
@@ -95,25 +95,25 @@
     "type": "vehicleAdd",
     "multiple": true,
     "format": [
-      [ "vehicleId", "uint16" ],
+      [ "id", "uint16" ],
       [ "name", "string" ],
       [ "maxHealth", "uint16" ]
     ]
   },
   "34": {
     "type": "vehicleRemove",
-    "comment": "playerId is the killer ID (if known)",
+    "comment": "id is the killer ID (if known)",
     "format": [
-      [ "vehicleId", "uint16" ],
+      [ "id", "uint16" ],
       [ "killerKnown", "bool" ],
-      [ "playerId", "uint8" ]
+      [ "id", "uint8" ]
     ]
   },
   "48": {
     "type": "fobAdd",
     "multiple": true,
     "format": [
-      [ "objectId", "uint32" ],
+      [ "id", "uint32" ],
       [ "team", "uint8" ],
       [ "position", "collection", [
         [ "x", "int16" ],
@@ -126,14 +126,14 @@
     "type": "fobRemove",
     "multiple": true,
     "format": [
-      [ "objectId", "uint32" ]
+      [ "id", "uint32" ]
     ]
   },
   "64": {
     "type": "flagUpdate",
     "comment": "owner: 0=neutral, 1=team1, 2=team2",
     "format": [
-      [ "flagId", "uint16" ],
+      [ "id", "uint16" ],
       [ "owner", "uint8" ]
     ]
   },
@@ -142,7 +142,7 @@
     "comment": "owner: 0=neutral, 1=team1, 2=team2",
     "multiple": true,
     "format": [
-      [ "flagId", "uint16" ],
+      [ "id", "uint16" ],
       [ "owner", "uint8" ],
       [ "position", "collection", [
         [ "x", "int16" ],
@@ -165,7 +165,7 @@
     "type": "chat",
     "format": [
       [ "channel", "uint8" ],
-      [ "playerId", "uint8" ],
+      [ "id", "uint8" ],
       [ "message", "string" ]
     ]
   },
@@ -207,7 +207,7 @@
     "type": "cacheAdd",
     "multiple": true,
     "format": [
-      [ "cacheId", "uint8" ],
+      [ "id", "uint8" ],
       [ "position", "collection", [
         [ "x", "int16" ],
         [ "y", "int16" ],
@@ -218,14 +218,14 @@
   "113": {
     "type": "cacheRemove",
     "format": [
-      [ "cacheId", "uint8" ]
+      [ "id", "uint8" ]
     ]
   },
   "114": {
     "type": "cacheReveal",
     "multiple": true,
     "format": [
-      [ "cacheId", "uint8" ]
+      [ "id", "uint8" ]
     ]
   },
   "115": {
@@ -245,7 +245,7 @@
   "161": {
     "type": "kitAllocated",
     "format": [
-      [ "playerId", "uint8" ],
+      [ "id", "uint8" ],
       [ "kitName", "string" ]
     ]
   },
