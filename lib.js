@@ -71,8 +71,22 @@ const processLog = data => {
   return events;
 };
 
+// Unnest events with multiple updates
+// :: event => ...events
+const flatten = event => {
+  const {
+    data: nestedData,
+    ...rest
+  } = event;
+  return R.chain(
+    data => ({ ...rest, data }),
+    nestedData
+  );
+};
+
 export {
   getCString,
   getBitArray,
-  processLog
+  processLog,
+  flatten
 };

@@ -3,7 +3,8 @@ import schemas from './schema.json';
 import {
   getCString,
   getBitArray,
-  processLog
+  processLog,
+  flatten
 } from './lib';
 import fixEvent from './fixEvent';
 
@@ -131,7 +132,12 @@ const applySchema = ({ type, format, multiple }, data) => {
 
 // Parse event log to array
 const parser = R.compose(
-  R.map(fixEvent),
+  R.map(R.compose(
+    // Unnest events
+    flatten,
+    // Temporary xUpdate fix
+    fixEvent
+  )),
   // Remove unknown data
   R.filter(R.identity),
   // Convert events to POJOs, according to schema
