@@ -9,6 +9,7 @@
   },
   "repository": "https://github.com/neftaly/tracker-parser",
   "dependencies": {
+    "immutable": "^3.8.1",
     "pako": "^1.0.5",
     "ramda": "^0.23.0",
     "text-encoding": "^0.6.4"

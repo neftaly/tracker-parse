@@ -1,6 +1,6 @@
 import tape from 'tape';
 import fs from 'fs';
-import parser, { state } from '../src';
+import { parser, states } from '../src';
 
 const rawFile = fs.readFileSync(
   './test/fixtures/tracker_2017_04_18_12_31_11.PRdemo'
@@ -17,13 +17,13 @@ fs.writeFileSync(
 );
 
 const bStart = new Date();
-const result = state(parsed);
+const result = states(undefined, parsed);
 const bEnd = new Date();
 console.warn('State time: ' + ((bEnd - bStart) / 1000) + ' sec');
 
 fs.writeFileSync(
   './test/results/tracker_2017_04_18_12_31_11.state.json',
-  JSON.stringify(result, null, 2)
+  JSON.stringify(result.last(), null, 2)
 );
 
 tape(test => {
