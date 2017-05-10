@@ -107,7 +107,7 @@ const fixPlayerUpdate = event => {
       item.flags[6] = true;
     }
     if (flags & playerUpdateFlags.teamkills) {
-      // THIS DATA IS NOT READABLE
+      item.status.teamkills = null;
       item.flags[7] = true;
     }
     if (flags & playerUpdateFlags.deaths) {
@@ -121,7 +121,7 @@ const fixPlayerUpdate = event => {
       item.flags[9] = true;
     }
     if (flags & playerUpdateFlags.placeholder) {
-      // THIS DATA IS NOT READABLE
+      item.status.placeholder = null;
       item.flags[10] = true;
     }
     if (flags & playerUpdateFlags.isAlive) {
@@ -194,13 +194,10 @@ const fixVehicleUpdate = event => {
 };
 
 const fixEvent = event => {
-  const { type } = event;
-  if (type === 'playerUpdate') {
-    return fixPlayerUpdate(event);
-  }
-  if (type === 'vehicleUpdate') {
-    return fixVehicleUpdate(event);
-  }
+  const [ action, category ] = event.type;
+  if (action !== 'update') return event;
+  if (category === 'players') return fixPlayerUpdate(event);
+  if (category === 'vehicles') return fixVehicleUpdate(event);
   return event;
 };
 

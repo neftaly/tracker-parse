@@ -93,8 +93,8 @@ Valid types are:
   * **float64**: 8 byte float
   * **string**: null-terminated string
   * **bool**: 1 byte boolean
-  * **null**: 0-byte placeholder value
-  * **1uint7**: 1-byte concatenation of 1-bit boolean & 7-bit number
+  * **static**: 0 byte static value
+  * **1uint7**: 1 byte concatenation of 1-bit boolean & 7-bit number
   * **group**: Same as *1uint7*, except first value becomes integer+1
   * **collection**: nested group of values
   * **bitmask**: group of true/false bytes
@@ -103,10 +103,9 @@ Valid types are:
 
 Number types are expected to be little-endian.
 
-#### `null`
-Empty placeholder value. The key/value will not be included in output data.
-
-Note that this is the string `"null"`, not the value `null`.
+#### `static`
+Static value. 0 bytes will be read from buffer.
+Third argument will be returned instead.
 
 #### `1uint7`
 Concatenated 1-bit boolean and 7-bit number.

@@ -46,8 +46,9 @@ const processValue = (data, position, typeData, accumulator) => {
       const bool = data.getUint8(position, true) === 1;
       return [ 1, bool ];
 
-    case 'null':
-      return [ 0, undefined ];
+    case 'static':
+      const [ , staticValue ] = typeData;
+      return [ 0, staticValue ];
 
     case '1uint7':
     case 'group':
