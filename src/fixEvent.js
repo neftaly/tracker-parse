@@ -135,11 +135,9 @@ const fixPlayerUpdate = event => {
       item.flags[12] = true;
     }
     if (flags & playerUpdateFlags.position) {
-      item.status.position = {
-        x: view.getInt16(offset, true),
-        y: view.getInt16(offset + 2, true),
-        z: view.getInt16(offset + 4, true)
-      };
+      item.status.x = view.getInt16(offset + 0, true);
+      item.status.y = view.getInt16(offset + 2, true);
+      item.status.z = view.getInt16(offset + 4, true);
       offset = offset + 6;
       item.flags[13] = true;
     }
@@ -177,11 +175,9 @@ const fixVehicleUpdate = event => {
       offset = offset + 1;
     }
     if (item.flags[1]) {
-      item.status.position = {
-        x: view.getInt16(offset + 0, true),
-        y: view.getInt16(offset + 2, true),
-        z: view.getInt16(offset + 4, true)
-      };
+      item.status.x = view.getInt16(offset + 0, true);
+      item.status.y = view.getInt16(offset + 2, true);
+      item.status.z = view.getInt16(offset + 4, true);
       offset = offset + 6;
     }
     if (item.flags[2]) {

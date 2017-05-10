@@ -115,11 +115,9 @@
     "format": [
       [ "id", "uint32" ],
       [ "team", "uint8" ],
-      [ "position", "collection", [
-        [ "x", "int16" ],
-        [ "y", "int16" ],
-        [ "z", "int16" ]
-      ] ]
+      [ "x", "int16" ],
+      [ "y", "int16" ],
+      [ "z", "int16" ]
     ]
   },
   "49": {
@@ -144,11 +142,9 @@
     "format": [
       [ "id", "uint16" ],
       [ "owner", "uint8" ],
-      [ "position", "collection", [
-        [ "x", "int16" ],
-        [ "y", "int16" ],
-        [ "z", "int16" ]
-      ] ],
+      [ "x", "int16" ],
+      [ "y", "int16" ],
+      [ "z", "int16" ],
       [ "radius", "uint16" ]
     ]
   },
@@ -185,11 +181,9 @@
     "type": "rallyAdd",
     "format": [
       [ "group", "group", [ "team", "squad" ] ],
-      [ "position", "collection", [
-        [ "x", "int16" ],
-        [ "y", "int16" ],
-        [ "z", "int16" ]
-      ] ]
+      [ "x", "int16" ],
+      [ "y", "int16" ],
+      [ "z", "int16" ]
     ]
   },
   "97": {
@@ -204,11 +198,9 @@
     "multiple": true,
     "format": [
       [ "id", "uint8" ],
-      [ "position", "collection", [
-        [ "x", "int16" ],
-        [ "y", "int16" ],
-        [ "z", "int16" ]
-      ] ]
+      [ "x", "int16" ],
+      [ "y", "int16" ],
+      [ "z", "int16" ]
     ]
   },
   "113": {
