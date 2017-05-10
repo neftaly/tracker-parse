@@ -8,6 +8,15 @@ const undefinedFlags = fromJS({ flags: undefined });
 const tickParser = R.reduce((state, event) => {
   const { type, data } = event;
 
+  // Server
+  if (type === 'serverDetails') {
+    return state.set(
+      'server',
+      fromJS(data)
+    );
+  }
+  if (type === 'tick') return state;
+
   // Player changes
   if (type === 'playerAdd') {
     const { id, ...rest } = data;
@@ -57,6 +66,7 @@ const tickParser = R.reduce((state, event) => {
   // FOBs
   if (type === 'fobAdd') {
     const { id, ...rest } = data;
+    console.log(data);
     return state.setIn(
       ['fobs', id],
       fromJS(rest)
@@ -71,7 +81,7 @@ const tickParser = R.reduce((state, event) => {
 
   // Tickets
   if (type === 'ticketsTeam1' || type === 'ticketsTeam2') {
-    const team = type === 'ticketsTeam1' ? 'team1' : 'team2';
+    const team = type === 'ticketsTeam1' ? 1 : 2;
     const { tickets } = data;
     return state.setIn(
       ['tickets', team],
@@ -128,10 +138,13 @@ const tickParser = R.reduce((state, event) => {
 
   // Squads
   if (type === 'squadName') {
-    const { groupId, squadName } = data;
+    const {
+      group: { team, squad },
+      name
+    } = data;
     return state.setIn(
-      ['squads', groupId],
-      squadName
+      ['squads', team, squad],
+      name
     );
   }
 
@@ -150,6 +163,8 @@ const tickParser = R.reduce((state, event) => {
     );
   }
 
+  console.log(type);
+
   return state;
 });
 
@@ -157,15 +172,13 @@ const states = (
   initial = new List([]),
   events
 ) => R.compose(
-  R.reduce(
-    (past, tick) => past.push(
-      tickParser(
-        past.get(-1, new Map({})),
-        tick
-      )
-    ),
-    initial
-  ),
+  R.reduce((past, tick) => past.push(
+    past.get(
+      -1, new Map({})
+    ).withMutations(
+      p => tickParser(p, tick)
+    )
+  ), initial),
   segment(event => event.type === 'tick')
 )(events);
 

@@ -49,6 +49,16 @@ const processValue = (data, position, typeData, accumulator) => {
     case 'null':
       return [ 0, undefined ];
 
+    case '1uint7':
+    case 'group':
+      const [ , [ a1key, b7key ] ] = typeData;
+      const a1b7 = data.getUint8(position, true);
+      const a1 = a1b7 >= 0x80;
+      return [ 1, {
+        [a1key]: type === '1uint7' ? a1 : Number(a1) + 1,
+        [b7key]: Number(a1b7 & 0x0F)
+      } ];
+
     case 'collection':
       const [ , collection ] = typeData;
       return applySchemaOnce(position, collection, data);

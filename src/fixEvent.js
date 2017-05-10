@@ -5,13 +5,13 @@ import {
 } from './lib';
 
 // TODO: Remove this hack
-// There is a bug with conditional collections, but I'm drawing a blank on it,
+// There is a bug with collections,
 // so will just manually parse for now.
 
 const fixPlayerUpdate = event => {
   const playerUpdateFlags = {
     team: 1,
-    squad: 2,
+    group: 2,
     vehicle: 4,
     health: 8,
     score: 16,
@@ -65,8 +65,12 @@ const fixPlayerUpdate = event => {
       offset = offset + 1;
       item.flags[0] = true;
     }
-    if (flags & playerUpdateFlags.squad) {
-      item.status.squad = view.getUint8(offset);
+    if (flags & playerUpdateFlags.group) {
+      const group = view.getUint8(offset, true);
+      item.status.group = {
+        isLeader: group >= 0x80,
+        squad: group & 0x0F
+      };
       offset = offset + 1;
       item.flags[1] = true;
     }

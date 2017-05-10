@@ -29,7 +29,7 @@
       [ "id", "uint8" ],
       [ "status", "conditional", "flags", [
         [ "team", "int8" ],
-        [ "squad", "uint8" ],
+        [ "group", "1uint7", [ "isLeader", "squad" ] ],
         [ "vehicle", "condCollection", [
           [ "id", "int16" ],
           [ "seat", "string" ],
@@ -183,9 +183,8 @@
   },
   "96": {
     "type": "rallyAdd",
-    "comment": "groupId is a 1-byte team prefix and a 7-byte squad number",
     "format": [
-      [ "groupId", "uint8" ],
+      [ "group", "group", [ "team", "squad" ] ],
       [ "position", "collection", [
         [ "x", "int16" ],
         [ "y", "int16" ],
@@ -195,12 +194,9 @@
   },
   "97": {
     "type": "rallyRemove",
-    "comment": [
-      "groupId is a 1-byte team prefix and a 7-byte squad number",
-      "Warning: may be called even when no rally exists"
-    ],
+    "comment": "Warning: may be called even when no rally exists",
     "format": [
-      [ "groupId", "uint8" ]
+      [ "group", "group", [ "team", "squad" ] ]
     ]
   },
   "112": {
@@ -246,18 +242,15 @@
     "type": "kitAllocated",
     "format": [
       [ "id", "uint8" ],
-      [ "kitName", "string" ]
+      [ "kit", "string" ]
     ]
   },
   "162": {
     "type": "squadName",
-    "comment": [
-      "groupId is a 1-byte team prefix and a 7-byte squad number",
-      "Squad 8 and 9 unavailable due to engine bug"
-    ],
+    "comment": "Squad 8 and 9 unavailable due to engine bug",
     "format": [
-      [ "groupId", "uint8" ],
-      [ "squadName", "string" ]
+      [ "group", "group", [ "team", "squad" ] ],
+      [ "name", "string" ]
     ]
   },
   "240": {

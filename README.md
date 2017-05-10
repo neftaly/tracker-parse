@@ -48,15 +48,15 @@ and the associated decoding instructions.
     "multiple": true,
     "format": [
       [ "flags", "bitmask", 1 ],
-      [ "vehicleId", "int16" ],
+      [ "id", "int16" ],
       [ "status", "conditional", "flags", [
-        [ "team", "uint16" ],
+        [ "team", "int8" ],
         [ "position", "collection", [
           [ "x", "int16" ],
           [ "y", "int16" ],
           [ "z", "int16" ]
         ] ],
-        [ "yaw", "int16" ],
+        [ "yaw", "int8" ],
         [ "health", "int16" ]
       ] ]
     ]
@@ -94,6 +94,8 @@ Valid types are:
   * **string**: null-terminated string
   * **bool**: 1 byte boolean
   * **null**: 0-byte placeholder value
+  * **1uint7**: 1-byte concatenation of 1-bit boolean & 7-bit number
+  * **group**: Same as *1uint7*, except first value becomes integer+1
   * **collection**: nested group of values
   * **bitmask**: group of true/false bytes
   * **condCollection**: nested group of values, read depending on first value
@@ -105,6 +107,20 @@ Number types are expected to be little-endian.
 Empty placeholder value. The key/value will not be included in output data.
 
 Note that this is the string `"null"`, not the value `null`.
+
+#### `1uint7`
+Concatenated 1-bit boolean and 7-bit number.
+The third argument contain a list of keys for each value.
+
+```js
+[ key, "1uint7", [
+  ...keys
+] ]
+```
+
+#### `group`
+Same as a `1uint7`, except that the first value is an integer,
+which gets incremented by 1.
 
 #### `collection`
 A collection is a nested list of values.
