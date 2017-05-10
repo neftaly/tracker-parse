@@ -104,7 +104,7 @@ const tickParser = R.reduce((state, event) => {
     );
   }
 
-  // // Caches
+  // Caches
   if (type === 'cacheAdd') {
     const { id, ...rest } = data;
     return state.setIn(
@@ -123,6 +123,22 @@ const tickParser = R.reduce((state, event) => {
     return state.setIn(
       ['caches', id, 'revealed'],
       true
+    );
+  }
+
+  // Flags
+  if (type === 'flagList') {
+    const { id, ...rest } = data;
+    return state.setIn(
+      ['flags', id],
+      fromJS(rest)
+    );
+  }
+  if (type === 'flagUpdate') {
+    const { id, owner } = data;
+    return state.setIn(
+      ['flags', id, 'owner'],
+      owner
     );
   }
 

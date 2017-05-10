@@ -108,6 +108,7 @@ const applySchemaOnce = (offset, format, data) => R.reduce(
         return processValue(data, offset, typeData, accumulator);
       } catch (e) {
         if (e instanceof RangeError) {
+          console.error('error', e);
           return [ 0, null ];
         }
         throw e;
