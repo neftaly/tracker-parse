@@ -1,6 +1,6 @@
 {
   "0": {
-    "type": "serverDetails",
+    "type": [ "add", "server" ],
     "format": [
       [ "version", "int32" ],
       [ "tickRate", "float32" ],
@@ -12,15 +12,17 @@
       [ "mapName", "string" ],
       [ "mapMode", "string" ],
       [ "mapLayer", "uint8" ],
-      [ "opforTeamName", "string" ],
-      [ "bluforTeamName", "string" ],
+      [ "team1Name", "string" ],
+      [ "team2Name", "string" ],
       [ "startTime", "int32" ],
-      [ "bluforTickets", "uint16" ],
-      [ "opforTickets", "uint16" ]
+      [ "team1Tickets", "uint16" ],
+      [ "team2Tickets", "uint16" ],
+      [ "intel", "static", 0 ],
+      [ "id", "static", "details" ]
     ]
   },
   "16": {
-    "type": "playerUpdate",
+    "type": [ "update", "players" ],
     "comment": "Note that teamKills is ignored, and the placeholder after ping",
     "multiple": true,
     "format": null,
@@ -39,10 +41,10 @@
         [ "score", "int16" ],
         [ "teamworkScore", "int16" ],
         [ "kills", "int16" ],
-        [ "teamKills", "null" ],
+        [ "teamKills", "static", null ],
         [ "deaths", "int16" ],
         [ "ping", "int16" ],
-        [ "placeholder", "null" ],
+        [ "placeholder", "static", null ],
         [ "isAlive", "bool" ],
         [ "isJoining", "bool" ],
         [ "position", "collection", [
@@ -56,7 +58,7 @@
     ]
   },
   "17": {
-    "type": "playerAdd",
+    "type": [ "add", "players" ],
     "multiple": true,
     "format": [
       [ "id", "uint8" ],
@@ -66,14 +68,14 @@
     ]
   },
   "18": {
-    "type": "playerRemove",
+    "type": [ "remove", "players" ],
     "multiple": true,
     "format": [
       [ "id", "uint8" ]
     ]
   },
   "32": {
-    "type": "vehicleUpdate",
+    "type": [ "update", "vehicles" ],
     "multiple": true,
     "format": null,
     "format__TODO_": [
@@ -92,7 +94,7 @@
     ]
   },
   "33": {
-    "type": "vehicleAdd",
+    "type": [ "add", "vehicles" ],
     "multiple": true,
     "format": [
       [ "id", "uint16" ],
@@ -101,7 +103,7 @@
     ]
   },
   "34": {
-    "type": "vehicleRemove",
+    "type": [ "remove", "vehicles" ],
     "comment": "id is the killer ID (if known)",
     "format": [
       [ "id", "uint16" ],
@@ -110,7 +112,7 @@
     ]
   },
   "48": {
-    "type": "fobAdd",
+    "type": [ "add", "fobs" ],
     "multiple": true,
     "format": [
       [ "id", "uint32" ],
@@ -121,14 +123,14 @@
     ]
   },
   "49": {
-    "type": "fobRemove",
+    "type": [ "remove", "fobs" ],
     "multiple": true,
     "format": [
       [ "id", "uint32" ]
     ]
   },
   "64": {
-    "type": "flagUpdate",
+    "type": [ "update", "flags" ],
     "comment": "owner: 0=neutral, 1=team1, 2=team2",
     "format": [
       [ "id", "uint16" ],
@@ -136,7 +138,7 @@
     ]
   },
   "65": {
-    "type": "flagList",
+    "type": [ "add", "flags" ],
     "comment": "owner: 0=neutral, 1=team1, 2=team2",
     "multiple": true,
     "format": [
@@ -149,16 +151,15 @@
     ]
   },
   "80": {
-    "type": "kill",
-    "comment": "attacker and victim are player IDs",
+    "type": [ "log", "kills" ],
     "format": [
-      [ "attacker", "uint8" ],
-      [ "victim", "uint8" ],
+      [ "attackerId", "uint8" ],
+      [ "victimId", "uint8" ],
       [ "weapon", "string" ]
     ]
   },
   "81": {
-    "type": "chat",
+    "type": [ "log", "messages" ],
     "format": [
       [ "channel", "uint8" ],
       [ "id", "uint8" ],
@@ -166,19 +167,21 @@
     ]
   },
   "82": {
-    "type": "ticketsTeam1",
+    "type": [ "update", "server" ],
     "format": [
-      [ "tickets", "uint16" ]
+      [ "team1Tickets", "uint16" ],
+      [ "id", "static", "details" ]
     ]
   },
   "83": {
-    "type": "ticketsTeam2",
+    "type": [ "update", "server" ],
     "format": [
-      [ "tickets", "uint16" ]
+      [ "team2Tickets", "uint16" ],
+      [ "id", "static", "details" ]
     ]
   },
   "96": {
-    "type": "rallyAdd",
+    "type": [ "add", "rallies" ],
     "format": [
       [ "group", "group", [ "team", "squad" ] ],
       [ "x", "int16" ],
@@ -187,58 +190,59 @@
     ]
   },
   "97": {
-    "type": "rallyRemove",
+    "type": [ "remove", "rallies" ],
     "comment": "Warning: may be called even when no rally exists",
     "format": [
       [ "group", "group", [ "team", "squad" ] ]
     ]
   },
   "112": {
-    "type": "cacheAdd",
+    "type": [ "add", "caches" ],
     "multiple": true,
     "format": [
       [ "id", "uint8" ],
       [ "x", "int16" ],
       [ "y", "int16" ],
-      [ "z", "int16" ]
+      [ "z", "int16" ],
+      [ "revealed", "static", false ]
     ]
   },
   "113": {
-    "type": "cacheRemove",
+    "type": [ "remove", "caches" ],
     "format": [
       [ "id", "uint8" ]
     ]
   },
   "114": {
-    "type": "cacheReveal",
+    "type": [ "update", "caches" ],
     "multiple": true,
     "format": [
-      [ "id", "uint8" ]
+      [ "id", "uint8" ],
+      [ "revealed", "static", true ]
     ]
   },
   "115": {
-    "type": "intelChange",
+    "type": [ "intel" ],
     "format": [
-      [ "points", "int8" ]
+      [ "change", "int8" ]
     ]
   },
   "160": {
-    "type": "revive",
-    "comment": "medic and victim are player IDs",
+    "type": [ "log", "revives" ],
     "format": [
-      [ "medic", "uint8" ],
-      [ "victim", "uint8" ]
+      [ "medicId", "uint8" ],
+      [ "victimId", "uint8" ]
     ]
   },
   "161": {
-    "type": "kitAllocated",
+    "type": [ "log", "kits" ],
     "format": [
       [ "id", "uint8" ],
       [ "kit", "string" ]
     ]
   },
   "162": {
-    "type": "squadName",
+    "type": [ "update", "squads" ],
     "comment": "Squad 8 and 9 unavailable due to engine bug",
     "format": [
       [ "group", "group", [ "team", "squad" ] ],
@@ -246,21 +250,24 @@
     ]
   },
   "240": {
-    "type": "roundEnd",
-    "format": []
+    "type": [ "update", "server" ],
+    "format": [
+      [ "roundFinished", "true" ],
+      [ "id", "static", "details" ]
+    ]
   },
   "241": {
-    "type": "tick",
-        "format": [
+    "type": [ "tick" ],
+    "format": [
       [ "time", "uint8" ]
     ]
   },
   "253": {
-    "type": "adminError",
+    "type": [ "log", "adminErrors" ],
     "format": null
   },
   "254": {
-    "type": "adminMessage",
+    "type": [ "log", "adminMessages" ],
     "format": null
   }
 }

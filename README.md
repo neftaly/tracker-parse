@@ -12,12 +12,12 @@ const events = parser(log);
 const history = states(undefined, events);
 
 console.log(
-  'Current state',
+  'Last state',
   history.get(-1).toJS()
 );
 ```
 ## `parser`
-` :: logfile => [ ...events ]`
+` :: logfile => [...events]`
 
 Using schema, converts log file from a Uint8Array, Array, or String,
 to an array of events.
@@ -25,7 +25,7 @@ to an array of events.
 Values with decoding errors are set to `null`.
 
 ## `states`
-` :: [ ...initial ] || undefined => [ ...events ] => [ ...initial, ...new ]`
+` :: [...initial] || undefined => [...events] => [...initial, ...new]`
 
 Converts a List of initial states (or undefined) and an Array of events to a
 List of states, separated by tick.
@@ -33,7 +33,7 @@ List of states, separated by tick.
 Lists use [immutable.js](https://facebook.github.io/immutable-js/).
 
 The most common immutable List operations are:
-  * `.get(index)` for a particular tick (index -1 for the last)
+  * `.get(index)` for a particular tick (index -1 for last)
   * `.toJS()` to convert to a plain JS object.
 
 ## Message schema

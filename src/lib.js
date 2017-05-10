@@ -35,7 +35,7 @@ const getCString = (buffer, offset) => {
 };
 
 // Convert a big-endian Uint8 into to an array of bits
-// Uint8 => [ ...bits ]
+// Uint8 => [...bits]
 const getByteArray = R.compose(
   // Add unset bits
   list => R.concat(
@@ -65,7 +65,7 @@ const getBitArray = R.compose(
 );
 
 // Slice a log up into an array of events
-// :: buffer => [ ...events ]
+// :: buffer => [...events]
 const processLog = data => {
   const log = new DataView(
     pako.inflate(data).buffer
@@ -88,7 +88,7 @@ const processLog = data => {
 };
 
 // Unnest events with multiple updates
-// :: event => [ ...events ]
+// :: event => [...events]
 const flatten = event => {
   const {
     data: nestedData,

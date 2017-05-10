@@ -7,7 +7,9 @@ import {
   flatten
 } from './lib';
 import fixEvent from './fixEvent';
-import states from './states';
+import {
+  states
+} from './states';
 
 // Process a single value from data at position by type
 const processValue = (data, position, typeData, accumulator) => {
