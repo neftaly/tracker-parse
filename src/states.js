@@ -8,8 +8,6 @@ import {
   List
 } from 'immutable';
 
-const undefinedFlags = Map({ flags: undefined });
-
 const tickParser = R.reduce((state, event) => {
   const {
     type: [ action, category ],
@@ -37,8 +35,7 @@ const tickParser = R.reduce((state, event) => {
     const { id, ...rest } = data;
     return state.mergeDeepIn(
       [category, id],
-      fromJS(rest),
-      undefinedFlags
+      fromJS(rest)
     );
   }
 

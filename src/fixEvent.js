@@ -151,6 +151,7 @@ const fixPlayerUpdate = event => {
       offset = offset + item.status.kit.length + 1;
       item.flags[15] = true;
     }
+    item.flags = null;
     data.push(item);
   }
   return R.assoc('data', data, event);
@@ -188,6 +189,7 @@ const fixVehicleUpdate = event => {
       item.status.health = view.getInt16(offset, true);
       offset = offset + 2;
     }
+    item.flags = null;
     data.push(item);
   }
   return R.assoc('data', data, event);

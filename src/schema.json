@@ -54,7 +54,8 @@
         ] ],
         [ "yaw", "int16" ],
         [ "kit", "string" ]
-      ] ]
+      ] ],
+      [ "flags", "static", null ]
     ]
   },
   "17": {
@@ -90,7 +91,8 @@
         ] ],
         [ "yaw", "int8" ],
         [ "health", "int16" ]
-      ] ]
+      ] ],
+      [ "flags", "static", null ]
     ]
   },
   "33": {
