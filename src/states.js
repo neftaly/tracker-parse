@@ -84,18 +84,21 @@ const tickParser = R.reduce((state, event) => {
   return state;
 });
 
+const fastTickParser = (past, tick) => past.withMutations(
+  past => tickParser(past, tick)
+);
+
 const states = (
-  initial = new List([]),
+  initial = new List(),
   events
 ) => R.compose(
   R.reduce((past, tick) => past.push(
-    past.get(
-      -1, new Map({})
-    ).withMutations(
-      past => tickParser(past, tick)
+    fastTickParser(
+      past.get(-1, new Map()),
+      tick
     )
   ), initial),
-  segment(event => event.type[0] === 'tick') // Segment events by tick
+  segment(event => event.type[0] === 'tick')
 )(events);
 
 export {
