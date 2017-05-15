@@ -1,12 +1,15 @@
 import R from 'ramda';
 import {
-  segment
-} from './lib';
-import {
   fromJS,
   Map,
   List
 } from 'immutable';
+import requestAnimationFrame from 'raf';
+import {
+  segment
+} from './lib';
+
+const splitTicks = segment(event => event.type[0] === 'tick');
 
 const tickParser = R.reduce((state, event) => {
   const {
@@ -84,23 +87,66 @@ const tickParser = R.reduce((state, event) => {
   return state;
 });
 
-const fastTickParser = (past, tick) => past.withMutations(
+const fastTickParser = (
+  past = new Map(),
+  tick
+) => past.withMutations(
   past => tickParser(past, tick)
 );
 
 const states = (
   initial = new List(),
   events
-) => R.compose(
-  R.reduce((past, tick) => past.push(
+) => R.reduce(
+  (past, tick) => past.push(
     fastTickParser(
-      past.get(-1, new Map()),
+      past.last(),
       tick
     )
-  ), initial),
-  segment(event => event.type[0] === 'tick')
-)(events);
+  ),
+  initial,
+  splitTicks(events)
+);
+
+// Break events into chunks, and return a promise.
+// Invoke fn(Boolean(done), List(history)) on every chunk,
+// and process them in a preemptable manner.
+const statesStream = (
+  initial = new List(),
+  events,
+  cb = R.identity
+) => new Promise((resolve, reject) => {
+  const processChunks = (fn, prior, [chunk, ...chunks]) => {
+    try {
+      const history = R.reduce(
+        (past, tick) => past.push(
+          fastTickParser(past.last(), tick)
+        ),
+        prior,
+        chunk
+      );
+      if (chunks.length === 0) {
+        fn(true, history);
+        resolve(history);
+      } else {
+        fn(false, history);
+        requestAnimationFrame(
+          () => processChunks(fn, history, chunks)
+        );
+      }
+    } catch (error) {
+      return reject(error);
+    }
+  };
+  const ticks = splitTicks(events);
+  return processChunks(
+    cb,
+    initial,
+    R.splitEvery(Math.ceil(ticks.length / 200), ticks)
+  );
+});
 
 export {
-  states
+  states,
+  statesStream
 };

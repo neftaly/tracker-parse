@@ -8,7 +8,8 @@ import {
 } from './lib';
 import fixEvent from './fixEvent';
 import {
-  states
+  states,
+  statesStream
 } from './states';
 
 // Process a single value from data at position by type
@@ -174,5 +175,6 @@ const parser = R.compose(
 
 export {
   parser,
-  states
+  states,
+  statesStream
 };

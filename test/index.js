@@ -7,7 +7,8 @@ import {
 } from 'fs';
 import {
   parser,
-  states
+  // states,
+  statesStream
 } from '../src';
 
 const resultsDir = './test/results';
@@ -29,15 +30,19 @@ writeFileSync(
   JSON.stringify(parsed, null, 2)
 );
 
-const bStart = new Date();
-const result = states(undefined, parsed);
-const bEnd = new Date();
-console.warn('State time: ' + ((bEnd - bStart) / 1000) + ' sec');
+// const bStart = new Date();
+// const result = states(undefined, parsed);
+// const bEnd = new Date();
+// console.warn('State time: ' + ((bEnd - bStart) / 1000) + ' sec');
 
-writeFileSync(
-  resultsDir + '/tracker_2017_04_18_12_31_11.state.json',
-  JSON.stringify(result.last(), null, 2)
-);
+// writeFileSync(
+//   resultsDir + '/tracker_2017_04_18_12_31_11.state.json',
+//   JSON.stringify(result.last(), null, 2)
+// );
+
+statesStream(undefined, parsed, (done, history) => {
+  console.warn(done, history.count());
+});
 
 tape(test => {
   test.plan(1);
